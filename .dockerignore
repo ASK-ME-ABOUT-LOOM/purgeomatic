@@ -1,0 +1,8 @@
+.env
+Dockerfile
+Makefile
+.venv
+venv
+.git
+.gitignore
+.dockerignore
