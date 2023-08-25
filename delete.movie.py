@@ -29,12 +29,15 @@ def purge(movie):
    if not c.dryrun:
      response = requests.delete(f"{c.radarrHost}/api/v3/movie/" + str(radarr['id']) + f"?apiKey={c.radarrAPIkey}&deleteFiles=true")
 
-   # The overseer API key header
-   headers = {"X-Api-Key": f"{c.overseerrAPIkey}"}
-   o = requests.get(f"{c.overseerrHost}/api/v1/movie/" + str(radarr['tmdbId']), headers=headers)
-   overseerr = json.loads(o.text)
-   if not c.dryrun:
-     o = requests.delete(f"{c.overseerrHost}/api/v1/media/" + str(overseerr['mediaInfo']['id']), headers=headers)
+   try:
+     # The overseer API key header
+     headers = {"X-Api-Key": f"{c.overseerrAPIkey}"}
+     o = requests.get(f"{c.overseerrHost}/api/v1/movie/" + str(radarr['tmdbId']), headers=headers)
+     overseerr = json.loads(o.text)
+     if not c.dryrun:
+       o = requests.delete(f"{c.overseerrHost}/api/v1/media/" + str(overseerr['mediaInfo']['id']), headers=headers)
+   except Exception as e:
+     print("ERROR: Unable to connect to overseerr.")
 
    action = "DELETED"
    if c.dryrun:
