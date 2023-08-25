@@ -169,7 +169,7 @@ $ docker run --rm -it --env-file .env --network=host ghcr.io/ask-me-about-loom/p
 [5] Harry Potter and the Deathly Hallows: Part 2 (2011)
 [6] Harry Potter and the Deathly Hallows: Part 1 (2010)
 [7] Harry Potter and the Chamber of Secrets (2002)
-`* The selected movie will be deleted `*
+*** The selected movie will be deleted ***
 Choose a movie to delete [0]: 7
 DELETED: Harry Potter and the Chamber of Secrets | Radarr ID: 2292 | TMDB ID: 672
 Total space reclaimed: 17.03GB
