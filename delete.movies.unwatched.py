@@ -7,8 +7,8 @@ import jq
 import sys
 
 c = config.Config()
-if not c.check("tautulliAPIkey","overseerrAPIkey","radarrAPIkey"):
-    print("ERROR: Required Tautulli/Overseerr/Radarr API key not set. Cannot continue.")
+if not c.check("tautulliAPIkey","radarrAPIkey"):
+    print("ERROR: Required Tautulli/Radarr API key not set. Cannot continue.")
     sys.exit(1)
 
 print("--------------------------------------")

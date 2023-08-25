@@ -7,8 +7,8 @@ import jq
 import sys
 
 c = config.Config()
-if not c.check("tautulliAPIkey","overseerrAPIkey","sonarrAPIkey"):
-    print("ERROR: Required Tautulli/Overseerr/Sonarr API key not set. Cannot continue.")
+if not c.check("tautulliAPIkey","sonarrAPIkey"):
+    print("ERROR: Required Tautulli/Sonarr API key not set. Cannot continue.")
     sys.exit(1)
 
 print("--------------------------------------")

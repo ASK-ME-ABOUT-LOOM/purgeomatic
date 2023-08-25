@@ -8,8 +8,8 @@ import argparse
 from argparse import RawTextHelpFormatter
 
 c = config.Config()
-if not c.check("tautulliAPIkey","overseerrAPIkey","radarrAPIkey"):
-    print("ERROR: Required Tautulli/Overseerr/Radarr API key not set. Cannot continue.")
+if not c.check("tautulliAPIkey","radarrAPIkey"):
+    print("ERROR: Required Tautulli/Radarr API key not set. Cannot continue.")
     sys.exit(1)
 
 parser = argparse.ArgumentParser(description='Enter a movie title as an argument to delete a movie from overseerr, radarr, and from the disk.\nDon\'t worry! You\'ll be prompted before it does a delete.\nSo that it is properly read, pass your title as:\n\n  --title="Search Title"\n', formatter_class=RawTextHelpFormatter)
