@@ -79,7 +79,7 @@ cd purgeomatic
 mv .env.example .env
 ```
 
-4) Create your venv:
+3) Create your venv:
 
 ```
 make venv
@@ -87,7 +87,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-6) Run the code:
+4) Run the code:
 
 ```
 python delete.movies.unwatched.py
