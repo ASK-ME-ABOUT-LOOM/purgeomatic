@@ -50,7 +50,7 @@ today = round(datetime.now().timestamp())
 
 totalsize = 0
 
-r = requests.get(f"{c.tautulliHost}/api/v2/?apikey={c.tautulliAPIkey}&cmd=get_library_media_info&section_id={c.tautulliSectionID}&length={c.tautulliNumRows}&refresh=true")
+r = requests.get(f"{c.tautulliHost}/api/v2/?apikey={c.tautulliAPIkey}&cmd=get_library_media_info&section_id={c.tautulliTvSectionID}&length={c.tautulliNumRows}&refresh=true")
 
 shows = json.loads(r.text)
 try:
