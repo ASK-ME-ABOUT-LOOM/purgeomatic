@@ -62,7 +62,9 @@ Total space reclaimed: 164.88GB
 
 ### Alternate usage
 
-If you wish, you can also run the python code yourself. Steps:
+If you wish, you can also run the python code yourself. This code has been tested on python 3.10 and 3.11.
+
+Steps:
 
 1) Clone the repo:
 
@@ -76,11 +78,9 @@ If you wish, you can also run the python code yourself. Steps:
 
 4) Create your venv:
 
-   `pip install virtualenv`
+   `make venv`
    
-   `virtualenv venv`
-   
-   `source venv/bin/activate`
+   `source .venv/bin/activate`
    
    `pip install -r requirements.txt`
 
