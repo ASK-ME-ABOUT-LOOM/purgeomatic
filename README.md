@@ -1,0 +1,172 @@
+# purgeomatic
+## Seek out and delete content nobody is watching. 
+### This software will delete your data! 💣
+
+## Introduction
+
+I could never get the [JBOPS scripts](https://github.com/blacktwin/JBOPS) to work, and disk utilization has been a problem that crops up every few months for several years running, so I finally sat down and wrote my own script. It relies on being able to access an API for tautulli & radarr, and it will also delete media from overseerr.
+
+The gist of the code is that it uses Tautulli's API to list all of the media in the media_info table for Tautulli's movie & tv sections (in my case those are "section_id=1" for movies and "section_id=2" for tv). Then it steps through every media item it finds and checks if it's been watched in a while. If it hasn't, it gets deleted!
+
+The delete is accomplished by it looking up the item using Radarr/Sonarr's API. It also connects to Overseerr's API and deletes the movie based on the TMDB/TVDB ID it pulls from Radarr/Sonarr's entry.
+
+## How to use
+
+### Requirements
+
+ - Tautulli
+ - Radarr (if deleting movies)
+ - Sonarr (if deleting TV)
+ - Overseerr
+
+### Scripts
+
+There are three main scripts in this package:
+
+- `delete.movies.unwatched.py`: For bulk-deleting movies that nobody has watched in a while.
+- `delete.tv.unwatched.py`: For bulk-deleting entire TV series that nobody has watched in a while.
+- `delete.movie.py`: For deleting a single movie from Radar/Overseerr/Tautulli. 
+
+### Usage
+
+The easiest way to use this software is via the published docker image. You can either pass all of the variables on the command line (`-e VARIABLE`) or use a local .env file, which I recommend. You can pull the [.env.example](https://github.com/ASK-ME-ABOUT-LOOM/purgeomatic/blob/main/.env.example) file from this project and rename it to .env to start. 
+
+There are defaults for nearly every setting. You'll absolutely need to set the API keys for your Radarr/Sonarr/Overseerr/Tautulli applications. Anything commented out in that example file is the default setting. If it works for you, you don't need to set it! 
+
+If your *arr applications are running on the same machine you're using to run these scripts, you'll need to use the `--network=host` configuration flag, or the container won't be able to talk to localhost.
+
+Once you've got your .env file configured, call it with:
+
+`docker run --rm -it --env-file .env --network=host ghcr.io/ask-me-about-loom/purgeomatic:latest python delete.movies.unwatched.py`
+
+Example output:
+
+```
+$ docker run --rm -it --env-file .env --network=host ghcr.io/ask-me-about-loom/purgeomatic:latest python delete.movies.unwatched.py
+DRY_RUN enabled!
+--------------------------------------
+2023-08-25T12:40:57.288608
+DRY RUN: Chaos Walking | Radarr ID: 1445 | TMDB ID: 412656
+DRY RUN: Captain Marvel | Radarr ID: 885 | TMDB ID: 299537
+DRY RUN: Captain America: Civil War | Radarr ID: 1768 | TMDB ID: 271110
+DRY RUN: Black Widow | Radarr ID: 1517 | TMDB ID: 497698
+DRY RUN: Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn) | Radarr ID: 1092 | TMDB ID: 495764
+DRY RUN: Bill & Ted's Excellent Adventure | Radarr ID: 1777 | TMDB ID: 1648
+DRY RUN: Bill & Ted's Bogus Journey | Radarr ID: 1778 | TMDB ID: 1649
+DRY RUN: Big Hero 6 | Radarr ID: 71 | TMDB ID: 177572
+DRY RUN: Big | Radarr ID: 71 | TMDB ID: 177572
+DRY RUN: Batman Begins | Radarr ID: 1745 | TMDB ID: 272
+DRY RUN: Assault on Precinct 13 | Radarr ID: 1212 | TMDB ID: 17814
+DRY RUN: 21 Jump Street | Radarr ID: 1096 | TMDB ID: 64688
+Total space reclaimed: 164.88GB
+```
+
+### Alternate usage
+
+If you wish, you can also run the python code yourself. Steps:
+
+1) Clone the repo:
+
+   `git clone https://github.com/ASK-ME-ABOUT-LOOM/purgeomatic.git`
+
+2) Update your .env file:
+
+   `cd purgeomatic`
+   
+   `mv .env.example .env`
+
+4) Create your venv:
+
+   `pip install virtualenv`
+   
+   `virtualenv venv`
+   
+   `source venv/bin/activate`
+   
+   `pip install -r requirements.txt`
+
+6) Run the code:
+
+   `python delete.movies.unwatched.py`
+
+### Configuration
+
+The scripts use the following environment variables for configuration:
+
+- `RADARR`: The URL & port of your Radarr installation, e.g. `http://localhost:7878`
+
+- `RADARR_API`: The API key for accessing your Radarr installation
+
+- `TAUTULLI`: The URL & port of your Tautulli installation, e.g. `http://localhost:8181`
+
+- `TAUTULLI_API`: The API key for accessing your Tautulli installation
+
+- `SONARR`: The URL & port of your Sonarr installation, e.g. `http://localhost:8989`
+
+- `SONARR_API`: The API key for accessing your Sonarr installation
+
+- `OVERSEERR`: The URL & port of your Overseerr installation, e.g. `http://localhost:5055`
+
+- `OVERSEERR_API`: The API key for accessing your Overseerr installation
+
+- `TAUTULLI_MOVIE_SECTIONID`: Default: 1. The section id in Tautulli containing watch history metadata of movies. You can get this by going to Tautulli, clicking "Libraries," then clicking the library you want to use. Look at the URL bar and you'll see "library?section_id=". You want the number after "section_id=".
+
+- `TAUTULLI_TV_SECTIONID`: Default: 2. The section id in Tautulli containing watch history metadata of TV shows. You can get this by going to Tautulli, clicking "Libraries," then clicking the library you want to use. Look at the URL bar and you'll see "library?section_id=". You want the number after "section_id=".
+
+- `TAUTULLI_NUM_ROWS`: Default: 3000. The maximum number of rows to fetch from Tautulli. This is required by the API call. Do you have more than 3000 media items? Increase the number. Otherwise the default will do just fine.
+
+- `DAYS_SINCE_LAST_WATCH`: Default: 500. The default of 500 means that if it has been 500 days since anybody watched this media item, the script should delete it.
+
+- `DAYS_WITHOUT_WATCH`: Default: 60. Sometimes people add media, but never watch it. The default of 60 means that if media got added, but nobody has watched it in 60 days, it gets purged. Set this to 0 to disable.
+
+- `DRY_RUN`: Default: off. Enabling dry run mode means none of these scripts will execute a delete. The very _existence_ of this variable enables dry run mode - setting it to nothing or "" or even to "false" will still enable it. Disable it by commenting it out from your .env file or removing it entirely.
+
+## Examples
+
+### delete.movies.unwatched.py
+
+```
+$ docker run --rm -it --env-file .env --network=host ghcr.io/ask-me-about-loom/purgeomatic:latest python delete.movies.unwatched.py
+--------------------------------------
+2023-08-25T13:08:48.093402
+DELETED: Willard | Radarr ID: 1906 | TMDB ID: 42532
+DELETED: Up | Radarr ID: 908 | TMDB ID: 14160
+DELETED: Super Mario Bros. | Radarr ID: 2133 | TMDB ID: 9607
+DELETED: Spider-Man | Radarr ID: 997 | TMDB ID: 429617
+DELETED: Predator | Radarr ID: 1982 | TMDB ID: 106
+DELETED: Plane | Radarr ID: 2067 | TMDB ID: 646389
+DELETED: Fall | Radarr ID: 2025 | TMDB ID: 985939
+DELETED: Dune | Radarr ID: 1613 | TMDB ID: 841
+DELETED: Dog | Radarr ID: 1837 | TMDB ID: 626735
+Total space reclaimed: 158.70GB
+```
+
+### delete.tv.unwatched.py
+
+```
+$ docker run --rm -it --env-file .env --network=host ghcr.io/ask-me-about-loom/purgeomatic:latest python delete.tv.unwatched.py
+--------------------------------------
+2023-08-25T13:12:54.044326
+DELETED: Tiny Beautiful Things | Sonarr ID: 566 | TVDB ID: 420985
+DELETED: National Treasure: Edge of History | Sonarr ID: 539 | TVDB ID: 382210
+DELETED: American Idol | Sonarr ID: 520 | TVDB ID: 70814
+Total space reclaimed: 117.63GB
+```
+
+### delete.movie.py
+
+```
+$ docker run --rm -it --env-file .env --network=host ghcr.io/ask-me-about-loom/purgeomatic:latest python delete.movie.py --title "Harry Potter"
+[0] Delete nothing
+[1] Harry Potter and the Sorcerer's Stone (2001)
+[2] Harry Potter and the Prisoner of Azkaban (2004)
+[3] Harry Potter and the Order of the Phoenix (2007)
+[4] Harry Potter and the Goblet of Fire (2005)
+[5] Harry Potter and the Deathly Hallows: Part 2 (2011)
+[6] Harry Potter and the Deathly Hallows: Part 1 (2010)
+[7] Harry Potter and the Chamber of Secrets (2002)
+`* The selected movie will be deleted `*
+Choose a movie to delete [0]: 7
+DELETED: Harry Potter and the Chamber of Secrets | Radarr ID: 2292 | TMDB ID: 672
+Total space reclaimed: 17.03GB
+```
