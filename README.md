@@ -1,5 +1,5 @@
 # purgeomatic - Seek out and delete content nobody is watching. 
-## This software will delete your data! 💣
+## 💣 This software will delete your data! 💣
 
 ## Introduction
 
