@@ -68,25 +68,30 @@ Steps:
 
 1) Clone the repo:
 
-   `git clone https://github.com/ASK-ME-ABOUT-LOOM/purgeomatic.git`
+```
+git clone https://github.com/ASK-ME-ABOUT-LOOM/purgeomatic.git
+```
 
 2) Update your .env file:
 
-   `cd purgeomatic`
-   
-   `mv .env.example .env`
+```
+cd purgeomatic
+mv .env.example .env
+```
 
 4) Create your venv:
 
-   `make venv`
-   
-   `source .venv/bin/activate`
-   
-   `pip install -r requirements.txt`
+```
+make venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 6) Run the code:
 
-   `python delete.movies.unwatched.py`
+```
+python delete.movies.unwatched.py
+```
 
 ### Configuration
 
