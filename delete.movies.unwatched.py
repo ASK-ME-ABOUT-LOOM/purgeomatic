@@ -39,7 +39,6 @@ def purge(movie):
 
    print(action + ": " + movie['title'] + " | Radarr ID: " + str(radarr['id']) + " | TMDB ID: " + str(radarr['tmdbId']))
    deletesize = (int(movie['file_size'])/1073741824)
-   deletesize = 1000000
   except StopIteration:
    pass
   except Exception as e:
