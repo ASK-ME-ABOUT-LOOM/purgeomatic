@@ -62,7 +62,7 @@ Total space reclaimed: 164.88GB
 
 ### Protected items
 
-If you like, you can protect items from deletion. Create a file called `protected` and put the TMDB or TVDB IDs you never want to delete in it, one per line. When you invoke the script, volume mount the protected file into `/app/protected` and that specific media item will be ignored, even in dry run mode.
+If you like, you can protect items from deletion. Create a file called `protected` and put the TMDB or TVDB IDs you never want to delete in it, one per line. When you invoke the script, volume mount the protected file into `/app/protected` and any specific media IDs found in the file will be ignored, even in dry run mode.
 
 Example command:
 
