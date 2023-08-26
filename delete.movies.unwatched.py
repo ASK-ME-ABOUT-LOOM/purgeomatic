@@ -11,6 +11,13 @@ if not c.check("tautulliAPIkey","radarrAPIkey"):
     print("ERROR: Required Tautulli/Radarr API key not set. Cannot continue.")
     sys.exit(1)
 
+protected = []
+
+if os.path.exists('./protected'):
+  with open('./protected', 'r') as file:
+    while line := file.readline():
+        protected.append(int(line.rstrip()))
+
 print("--------------------------------------")
 print(datetime.now().isoformat())
 
@@ -21,6 +28,9 @@ def purge(movie):
   f = requests.get(f"{c.radarrHost}/api/v3/movie?apiKey={c.radarrAPIkey}")
   try:
    radarr = jq.compile('.[] | select(.title | contains("' + movie['title'] + '"))').input(f.json()).first()
+
+   if radarr['tmdbId'] in protected:
+       return(deletesize)
 
    if not c.dryrun:
      response = requests.delete(f"{c.radarrHost}/api/v3/movie/" + str(radarr['id']) + f"?apiKey={c.radarrAPIkey}&deleteFiles=true")

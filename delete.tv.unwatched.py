@@ -11,6 +11,13 @@ if not c.check("tautulliAPIkey","sonarrAPIkey"):
     print("ERROR: Required Tautulli/Sonarr API key not set. Cannot continue.")
     sys.exit(1)
 
+protected = []
+
+if os.path.exists('./protected'):
+  with open('./protected', 'r') as file:
+    while line := file.readline():
+        protected.append(int(line.rstrip()))
+
 print("--------------------------------------")
 print(datetime.now().isoformat())
 
@@ -22,6 +29,10 @@ def purge(series):
 
   try:
    sonarr = jq.compile('.[] | select(.title | contains("' + series['title'] + '"))').input(f.json()).first()
+
+   if sonarr['tvdbId'] in protected:
+     return(deletesize)
+
    if not c.dryrun:
        response = requests.delete(f"{c.sonarrHost}/api/v3/series/" + str(sonarr['id']) + f"?apiKey={c.sonarrAPIkey}&deleteFiles=true")
 
