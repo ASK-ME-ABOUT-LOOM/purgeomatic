@@ -60,6 +60,25 @@ DRY RUN: 21 Jump Street | Radarr ID: 1096 | TMDB ID: 64688
 Total space reclaimed: 164.88GB
 ```
 
+### Protected items
+
+If you like, you can protect items from deletion. Create a file called `protected` and put the TMDB or TVDB IDs you never want to delete in it, one per line. When you invoke the script, volume mount the protected file into `/app/protected` and that specific media item will be ignored, even in dry run mode.
+
+Example command:
+
+```
+docker run --rm -it --env-file .env --network=host -v /home/user/protected:/app/protected ghcr.io/ask-me-about-loom/purgeomatic:latest python delete.movies.unwatched.py
+```
+
+An example of the contents of a `protected` file:
+
+```
+4011
+278
+238
+10386
+```
+
 ### Alternate usage
 
 If you wish, you can also run the python code yourself. This code has been tested on python 3.10 and 3.11.
