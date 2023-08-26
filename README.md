@@ -3,7 +3,17 @@
 
 ## Introduction
 
-I could never get the [JBOPS scripts](https://github.com/blacktwin/JBOPS) to work, and disk utilization has been a problem that crops up every few months for several years running, so I finally sat down and wrote my own script. It relies on being able to access an API for tautulli & radarr, and it will also delete media from overseerr.
+### Features
+
+ - Compatible with cron
+ - Delete unwatched movies & tv series
+ - Delete a single movie from Radarr/Tautulli/Overseerr using delete.movie.py
+ - Supports a 'dry run' mode so you can test it
+ - Supports a whitelist of content that should never be deleted using TMDB/TVDB IDs in the `protected` file
+
+### Summary
+
+I could never get the [JBOPS scripts](https://github.com/blacktwin/JBOPS) to work, and disk utilization has been a problem that crops up every few months for several years running, so I finally sat down and wrote my own script. It relies on being able to access an API for tautulli/radarr/sonarr, and it will also delete the media entry from overseerr if you use it.
 
 The gist of the code is that it uses Tautulli's API to list all of the media in the media_info table for Tautulli's movie & tv sections (in my case those are "section_id=1" for movies and "section_id=2" for tv). Then it steps through every media item it finds and checks if it's been watched in a while. If it hasn't, it gets deleted!
 
@@ -17,14 +27,6 @@ The delete is accomplished by it looking up the item using Radarr/Sonarr's API. 
  - Radarr (if deleting movies)
  - Sonarr (if deleting TV)
  - Overseerr (optional: the script will work without an overseer installation/configuration)
-
-### Features
-
- - Compatible with cron
- - Delete unwatched movies & tv series
- - Delete a single movie from Radarr/Tautulli/Overseerr using delete.movie.py
- - Supports a 'dry run' mode so you can test it
- - Supports a whitelist of content that should never be deleted using TMDB/TVDB IDs in the `protected` file
 
 ### Scripts
 
