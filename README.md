@@ -18,6 +18,14 @@ The delete is accomplished by it looking up the item using Radarr/Sonarr's API. 
  - Sonarr (if deleting TV)
  - Overseerr (optional: the script will work without an overseer installation/configuration)
 
+### Features
+
+ - Compatible with cron
+ - Delete unwatched movies & tv series
+ - Delete a single movie from Radarr/Tautulli/Overseerr using delete.movie.py
+ - Supports a 'dry run' mode so you can test it
+ - Supports a whitelist of content that should never be deleted using TMDB/TVDB IDs in the `protected` file
+
 ### Scripts
 
 There are three main scripts in this package:
