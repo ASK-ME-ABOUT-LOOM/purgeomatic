@@ -89,6 +89,8 @@ An example of the contents of a `protected` file:
 10386
 ```
 
+Note: because the `protected` file uses TMDB & TVDB IDs, there is a possibility of overlap. If you're concerned about this, I suggest you create separate files for running with the TV and movie deletes, i.e. `-v /home/user/protectedtv:/app/protected` and `-v /home/user/protectedmovies:/app/protected`.
+
 ### Alternate usage
 
 If you wish, you can also run the python code yourself. This code has been tested on python 3.10 and 3.11.
