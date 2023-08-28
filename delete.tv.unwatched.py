@@ -44,7 +44,7 @@ def purge(series):
      if not c.dryrun:
        o = requests.delete(f"{c.overseerrHost}/api/v1/media/" + str(overseerr['mediaInfo']['id']), headers=headers)
    except Exception as e:
-     print("ERROR: Unable to connect to overseerr.")
+     print("ERROR: Unable to connect to overseerr. Error message: " + str(e))
 
    action = "DELETED"
    if c.dryrun:
