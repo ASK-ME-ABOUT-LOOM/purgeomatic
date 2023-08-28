@@ -37,14 +37,13 @@ def purge(series):
        response = requests.delete(f"{c.sonarrHost}/api/v3/series/" + str(sonarr['id']) + f"?apiKey={c.sonarrAPIkey}&deleteFiles=true")
 
    try:
-     # The overseer API key header
-     headers = {"X-Api-Key": f"{c.overseerrAPIkey}"}
-     o = requests.get(f"{c.overseerrHost}/api/v1/series/" + str(sonarr['tvdbId']), headers=headers)
-     overseerr = json.loads(o.text)
      if not c.dryrun:
-       o = requests.delete(f"{c.overseerrHost}/api/v1/media/" + str(overseerr['mediaInfo']['id']), headers=headers)
+       headers = {"X-Api-Key": f"{c.overseerrAPIkey}"}
+       o = requests.get(f"{c.overseerrHost}/api/v1/search/?query=" + str(sonarr['title']), headers=headers)
+       overseerrid = jq.compile('[select (.results[].mediainfo.tvdbId = ' + str(sonarr['tvdbId']) + ')][0].results[0].mediaInfo.id').input(o.json())
+       o = requests.delete(f"{c.overseerrHost}/api/v1/media/" + str(overseerrid.text()), headers=headers)
    except Exception as e:
-     print("ERROR: Unable to connect to overseerr. Error message: " + str(e))
+     print("ERROR: Overseerr API error. Error message: " + str(e))
 
    action = "DELETED"
    if c.dryrun:
