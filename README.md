@@ -142,7 +142,7 @@ The scripts use the following environment variables for configuration:
 
 - `OVERSEERR`: The URL & port of your Overseerr installation, e.g. `http://localhost:5055`
 
-- `OVERSEERR_API`: The API key for accessing your Overseerr installation
+- `OVERSEERR_API`: The API key for accessing your Overseerr installation. Be sure to comment out the Overseerr connection variables in your `.env` file if you don't use Overseerr. It will keep your logs neat. 
 
 - `TAUTULLI_MOVIE_SECTIONID`: Default: 1. The section id in Tautulli containing watch history metadata of movies. You can get this by going to Tautulli, clicking "Libraries," then clicking the library you want to use. Look at the URL bar and you'll see "library?section_id=". You want the number after "section_id=".
 
