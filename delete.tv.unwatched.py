@@ -37,7 +37,7 @@ def purge(series):
        response = requests.delete(f"{c.sonarrHost}/api/v3/series/" + str(sonarr['id']) + f"?apiKey={c.sonarrAPIkey}&deleteFiles=true")
 
    try:
-     if not c.dryrun:
+     if not c.dryrun and c.overseerrAPIkey is not None:
        headers = {"X-Api-Key": f"{c.overseerrAPIkey}"}
        o = requests.get(f"{c.overseerrHost}/api/v1/search/?query=" + str(sonarr['title']), headers=headers)
        overseerrid = jq.compile('[select (.results[].mediainfo.tvdbId = ' + str(sonarr['tvdbId']) + ')][0].results[0].mediaInfo.id').input(o.json())
