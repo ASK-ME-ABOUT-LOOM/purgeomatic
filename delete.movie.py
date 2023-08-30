@@ -31,7 +31,6 @@ if not isinstance(args.title, str) or len(args.title) < 1:
 
 
 def purge(movie):
-
     deletesize = 0
 
     f = requests.get(f"{c.radarrHost}/api/v3/movie?apiKey={c.radarrAPIkey}")
@@ -85,13 +84,12 @@ def purge(movie):
 
     return deletesize
 
-
 totalsize = 0
-
 r = requests.get(
     f"{c.tautulliHost}/api/v2/?apikey={c.tautulliAPIkey}&cmd=get_library_media_info&section_id={c.tautulliMovieSectionID}&search={args.title}&refresh=true"
 )
 movies = json.loads(r.text)
+
 try:
     if len(movies["response"]["data"]["data"]) == 1:
         movie = movies["response"]["data"]["data"][0]

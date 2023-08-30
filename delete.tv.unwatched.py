@@ -21,9 +21,7 @@ if os.path.exists("./protected"):
 print("--------------------------------------")
 print(datetime.now().isoformat())
 
-
 def purge(series):
-
     deletesize = 0
 
     f = requests.get(f"{c.sonarrHost}/api/v3/series?apiKey={c.sonarrAPIkey}")
@@ -85,16 +83,13 @@ def purge(series):
 
     return deletesize
 
-
 today = round(datetime.now().timestamp())
-
 totalsize = 0
-
 r = requests.get(
     f"{c.tautulliHost}/api/v2/?apikey={c.tautulliAPIkey}&cmd=get_library_media_info&section_id={c.tautulliTvSectionID}&length={c.tautulliNumRows}&refresh=true"
 )
-
 shows = json.loads(r.text)
+
 try:
     for series in shows["response"]["data"]["data"]:
 

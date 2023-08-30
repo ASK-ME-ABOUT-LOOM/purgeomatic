@@ -21,9 +21,7 @@ if os.path.exists("./protected"):
 print("--------------------------------------")
 print(datetime.now().isoformat())
 
-
 def purge(movie):
-
     deletesize = 0
 
     f = requests.get(f"{c.radarrHost}/api/v3/movie?apiKey={c.radarrAPIkey}")
@@ -81,11 +79,8 @@ def purge(movie):
 
     return deletesize
 
-
 today = round(datetime.now().timestamp())
-
 totalsize = 0
-
 r = requests.get(
     f"{c.tautulliHost}/api/v2/?apikey={c.tautulliAPIkey}&cmd=get_library_media_info&section_id={c.tautulliMovieSectionID}&length={c.tautulliNumRows}&refresh=true"
 )
