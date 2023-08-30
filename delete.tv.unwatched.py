@@ -97,6 +97,12 @@ try:
             lp = round((today - int(series["last_played"])) / 86400)
             if lp > c.daysSinceLastWatch:
                 totalsize = totalsize + purge(series)
+        else:
+            if c.daysWithoutWatch > 0:
+                if series["added_at"] and series["play_count"] is None:
+                    aa = round((today - int(series["added_at"])) / 86400)
+                    if aa > c.daysWithoutWatch:
+                        totalsize = totalsize + purge(series)
 except Exception as e:
     print(
         "ERROR: There was a problem connecting to Tautulli/Sonarr/Overseerr. Please double-check that your connection settings and API keys are correct.\n\nError message:\n"
