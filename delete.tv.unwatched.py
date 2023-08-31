@@ -21,6 +21,7 @@ if os.path.exists("./protected"):
 print("--------------------------------------")
 print(datetime.now().isoformat())
 
+
 def purge(series):
     deletesize = 0
 
@@ -83,6 +84,7 @@ def purge(series):
 
     return deletesize
 
+
 today = round(datetime.now().timestamp())
 totalsize = 0
 r = requests.get(
@@ -92,7 +94,6 @@ shows = json.loads(r.text)
 
 try:
     for series in shows["response"]["data"]["data"]:
-
         if series["last_played"]:
             lp = round((today - int(series["last_played"])) / 86400)
             if lp > c.daysSinceLastWatch:

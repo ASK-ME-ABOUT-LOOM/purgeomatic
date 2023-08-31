@@ -21,6 +21,7 @@ if os.path.exists("./protected"):
 print("--------------------------------------")
 print(datetime.now().isoformat())
 
+
 def purge(movie):
     deletesize = 0
 
@@ -78,6 +79,7 @@ def purge(movie):
         print("ERROR: " + movie["title"] + ": " + str(e))
 
     return deletesize
+
 
 today = round(datetime.now().timestamp())
 totalsize = 0

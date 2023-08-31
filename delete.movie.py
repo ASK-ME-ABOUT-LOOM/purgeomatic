@@ -84,6 +84,7 @@ def purge(movie):
 
     return deletesize
 
+
 totalsize = 0
 r = requests.get(
     f"{c.tautulliHost}/api/v2/?apikey={c.tautulliAPIkey}&cmd=get_library_media_info&section_id={c.tautulliMovieSectionID}&search={args.title}&refresh=true"
