@@ -28,7 +28,7 @@ The delete is accomplished by it looking up the item using Radarr/Sonarr's API. 
  - Tautulli
  - Radarr (if deleting movies)
  - Sonarr (if deleting TV)
- - Overseerr (optional: the script will work without an overseer installation/configuration)
+ - Overseerr (optional: the script will work without an overseer configuration)
 
 ### Scripts
 
