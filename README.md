@@ -1,6 +1,8 @@
 # purgeomatic - Seek out and delete content nobody is watching. 
 ## 💣 This software will delete your data! 💣
 
+![Python](https://img.shields.io/badge/python-3.10%20|%203.11-blue) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 ## Introduction
 
 ### Features
@@ -205,3 +207,9 @@ Choose a movie to delete [0]: 7
 DELETED: Harry Potter and the Chamber of Secrets | Radarr ID: 2292 | TMDB ID: 672
 Total space reclaimed: 17.03GB
 ```
+
+## Contributors
+
+![GitHub Contributors Image](https://contrib.rocks/image?repo=ask-me-about-loom/purgeomatic)
+
+[![HitCount](https://hits.dwyl.com/ask-me-about-loom/purgeomatic.svg)](https://hits.dwyl.com/ask-me-about-loom/purgeomatic)
