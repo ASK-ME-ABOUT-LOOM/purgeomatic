@@ -1,7 +1,7 @@
 # purgeomatic - Seek out and delete content nobody is watching. 
 ## 💣 This software will delete your data! 💣
 
-![Python](https://img.shields.io/badge/python-3.10%20|%203.11-blue) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![Python](https://img.shields.io/badge/python-3.10%20|%203.11-blue) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Introduction
 
@@ -210,6 +210,8 @@ Total space reclaimed: 17.03GB
 
 ## Contributors
 
-![GitHub Contributors Image](https://contrib.rocks/image?repo=ask-me-about-loom/purgeomatic) 
+<a href="https://github.com/ask-me-about-loom/purgeomatic/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ask-me-about-loom/purgeomatic" />
+</a>
 
 [![HitCount](https://hits.dwyl.com/ask-me-about-loom/purgeomatic.svg)](https://hits.dwyl.com/ask-me-about-loom/purgeomatic)
