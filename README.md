@@ -210,6 +210,6 @@ Total space reclaimed: 17.03GB
 
 ## Contributors
 
-![GitHub Contributors Image](https://contrib.rocks/image?repo=ask-me-about-loom/purgeomatic)
+![GitHub Contributors Image](https://contrib.rocks/image?repo=ask-me-about-loom/purgeomatic) 
 
 [![HitCount](https://hits.dwyl.com/ask-me-about-loom/purgeomatic.svg)](https://hits.dwyl.com/ask-me-about-loom/purgeomatic)
