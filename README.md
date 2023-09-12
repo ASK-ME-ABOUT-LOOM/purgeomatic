@@ -40,7 +40,7 @@ There are three main scripts in this package:
 
 ### Usage
 
-The easiest way to use this software is via the published docker image. You can either pass all of the variables on the command line (`-e VARIABLE`) or use a local .env file, which I recommend. You can pull the [.env.example](https://github.com/ASK-ME-ABOUT-LOOM/purgeomatic/blob/main/.env.example) file from this project and rename it to .env to start. 
+The easiest way to use this software is via the published container image. You can either pass all of the variables on the command line (`-e VARIABLE`) or use a local .env file, which I recommend. You can pull the [.env.example](https://github.com/ASK-ME-ABOUT-LOOM/purgeomatic/blob/main/.env.example) file from this project and rename it to .env to start. 
 
 There are defaults for nearly every setting. You'll absolutely need to set the API keys for your Radarr/Sonarr/Overseerr/Tautulli applications. Anything commented out in that example file is the default setting. If it works for you, you don't need to set it! 
 
@@ -97,7 +97,7 @@ Note: because the `protected` file uses TMDB & TVDB IDs, there is a possibility 
 
 If you wish, you can also run the python code yourself. This code has been tested on python 3.10 and 3.11.
 
-Steps:
+Example steps (may vary depending on your environment):
 
 1) Clone the repo:
 
