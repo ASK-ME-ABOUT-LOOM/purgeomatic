@@ -28,7 +28,7 @@ def purge(movie):
     f = requests.get(f"{c.radarrHost}/api/v3/movie?apiKey={c.radarrAPIkey}")
     try:
         radarr = (
-            jq.compile('.[] | select(.title | contains("' + movie["title"] + '"))')
+            jq.compile('.[] | select(.title == "' + movie["title"] + '")')
             .input(f.json())
             .first()
         )

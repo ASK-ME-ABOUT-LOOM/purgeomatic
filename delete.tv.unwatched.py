@@ -29,7 +29,7 @@ def purge(series):
 
     try:
         sonarr = (
-            jq.compile('.[] | select(.title | contains("' + series["title"] + '"))')
+            jq.compile('.[] | select(.title == "' + series["title"] + '")')
             .input(f.json())
             .first()
         )
