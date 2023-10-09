@@ -25,13 +25,26 @@ print(datetime.now().isoformat())
 def purge(movie):
     deletesize = 0
 
+    r = requests.get(
+        f"{c.tautulliHost}/api/v2/?apikey={c.tautulliAPIkey}&cmd=get_metadata&rating_key={movie['rating_key']}"
+    )
+
+    guids = jq.compile(".[].data.guids").input(r.json()).first()
+
+    tmdbid = [i for i in guids if i.startswith("tmdb://")][0].split("tmdb://", 1)[1]
+
     f = requests.get(f"{c.radarrHost}/api/v3/movie?apiKey={c.radarrAPIkey}")
     try:
-        radarr = (
-            jq.compile('.[] | select(.title == "' + movie["title"] + '")')
-            .input(f.json())
-            .first()
-        )
+        if guids:
+            radarr = (
+                jq.compile(f".[] | select(.tmdbId == {tmdbid})").input(f.json()).first()
+            )
+        else:
+            radarr = (
+                jq.compile(f".[] | select(.title == {movie['title']})")
+                .input(f.json())
+                .first()
+            )
 
         if radarr["tmdbId"] in protected:
             return deletesize

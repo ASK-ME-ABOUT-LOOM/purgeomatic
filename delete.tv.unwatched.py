@@ -25,14 +25,26 @@ print(datetime.now().isoformat())
 def purge(series):
     deletesize = 0
 
-    f = requests.get(f"{c.sonarrHost}/api/v3/series?apiKey={c.sonarrAPIkey}")
+    r = requests.get(
+        f"{c.tautulliHost}/api/v2/?apikey={c.tautulliAPIkey}&cmd=get_metadata&rating_key={series['rating_key']}"
+    )
 
+    guids = jq.compile(".[].data.guids").input(r.json()).first()
+
+    tvdbid = [i for i in guids if i.startswith("tvdb://")][0].split("tvdb://", 1)[1]
+
+    f = requests.get(f"{c.sonarrHost}/api/v3/series?apiKey={c.sonarrAPIkey}")
     try:
-        sonarr = (
-            jq.compile('.[] | select(.title == "' + series["title"] + '")')
-            .input(f.json())
-            .first()
-        )
+        if guids:
+            sonarr = (
+                jq.compile(f".[] | select(.tvdbId == {tvdbid})").input(f.json()).first()
+            )
+        else:
+            sonarr = (
+                jq.compile(f".[] | select(.title == {series['title']})")
+                .input(f.json())
+                .first()
+            )
 
         if sonarr["tvdbId"] in protected:
             return deletesize
@@ -47,10 +59,17 @@ def purge(series):
         try:
             if not c.dryrun and c.overseerrAPIkey is not None:
                 headers = {"X-Api-Key": f"{c.overseerrAPIkey}"}
-                o = requests.get(
-                    f"{c.overseerrHost}/api/v1/search/?query=" + str(sonarr["title"]),
-                    headers=headers,
-                )
+                if guids:
+                    o = requests.get(
+                        f"{c.overseerrHost}/api/v1/search/?query=tvdb%3A{tvdbid}",
+                        headers=headers,
+                    )
+                else:
+                    o = requests.get(
+                        f"{c.overseerrHost}/api/v1/search/?query="
+                        + str(sonarr["title"]),
+                        headers=headers,
+                    )
                 overseerrid = jq.compile(
                     "[select (.results[].mediainfo.tvdbId = "
                     + str(sonarr["tvdbId"])
