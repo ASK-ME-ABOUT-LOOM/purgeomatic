@@ -1,5 +1,4 @@
 # Configuration steps for using these scripts on Synology
-## 2023-10-10
 ### Credit to [/u/OkBoomerEh](https://www.reddit.com/user/OkBoomerEh) on reddit
 
 ## ENV File
