@@ -30,7 +30,7 @@ The delete is accomplished by it looking up the item using Radarr/Sonarr's API. 
  - Sonarr (if deleting TV)
  - Overseerr (optional: the script will work without an overseer configuration)
 
-*Please note:* these scripts rely on Plex's metadata to supply TMDB/TVDB IDs. *Please take a moment to refresh the metadata in your Plex libraries before running them.*
+*Please note:* these scripts rely on Plex's metadata to supply TMDB/TVDB IDs. **Please take a moment to refresh the metadata in your Plex libraries before running them.**
 
 ### Scripts
 
@@ -148,9 +148,9 @@ The scripts use the following environment variables for configuration:
 
 - `OVERSEERR_API`: The API key for accessing your Overseerr installation. Be sure to comment out the Overseerr connection variables in your `.env` file if you don't use Overseerr. It will keep your logs neat. 
 
-- `TAUTULLI_MOVIE_SECTIONID`: Default: 1. The section id in Tautulli containing watch history metadata of movies. You can get this by going to Tautulli, clicking "Libraries," then clicking the library you want to use. Look at the URL bar and you'll see "library?section_id=". You want the number after "section_id=".
+- `TAUTULLI_MOVIE_SECTIONID`: Default: 1. The section ID in Tautulli containing watch history metadata of movies. You can get this by going to Tautulli, clicking "Libraries," then clicking the library you want to use. Look at the URL bar and you'll see "library?section_id=". You want the number after "section_id=".
 
-- `TAUTULLI_TV_SECTIONID`: Default: 2. The section id in Tautulli containing watch history metadata of TV shows. You can get this by going to Tautulli, clicking "Libraries," then clicking the library you want to use. Look at the URL bar and you'll see "library?section_id=". You want the number after "section_id=".
+- `TAUTULLI_TV_SECTIONID`: Default: 2. The section ID in Tautulli containing watch history metadata of TV shows. You can get this by going to Tautulli, clicking "Libraries," then clicking the library you want to use. Look at the URL bar and you'll see "library?section_id=". You want the number after "section_id=".
 
 - `TAUTULLI_NUM_ROWS`: Default: 3000. The maximum number of rows to fetch from Tautulli. This is required by the API call. Do you have more than 3000 media items? Increase the number. Otherwise the default will do just fine.
 
@@ -209,6 +209,22 @@ Choose a movie to delete [0]: 7
 DELETED: Harry Potter and the Chamber of Secrets | Radarr ID: 2292 | TMDB ID: 672
 Total space reclaimed: 17.03GB
 ```
+
+## Synology
+
+Here's a [great writeup for getting this project working on your Synology box](README_synology.md) if you're just getting started. Credit to [/u/OkBoomerEh](https://www.reddit.com/user/OkBoomerEh) on reddit. 
+
+## Common Problems
+
+### I'm getting this weird Python error about JSON / connection string / whatever. What am I doing wrong?
+
+Before opening an issue, *please* double-check your connection settings in your `.env` file or the environment variables! Nearly every time, the problem has been a typo in the API key or connection string, or it's been that the Section IDs are not correct. 
+
+As a reminder, to get the correct section ID for a given library, go to Tautulli, click "Libraries," then click the library you want to use. Look at the URL bar and you'll see "library?section_id=". You want the number after "section_id=".
+
+### I get the error "the input device is not a TTY" when I run the script with cron.
+
+Make sure to remove the `-it` from the command line, which indicates to Docker that you'd like an interactive shell. 
 
 ## Contributors
 

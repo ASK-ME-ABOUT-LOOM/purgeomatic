@@ -59,17 +59,11 @@ def purge(series):
         try:
             if not c.dryrun and c.overseerrAPIkey is not None:
                 headers = {"X-Api-Key": f"{c.overseerrAPIkey}"}
-                if guids:
-                    o = requests.get(
-                        f"{c.overseerrHost}/api/v1/search/?query=tvdb%3A{tvdbid}",
-                        headers=headers,
-                    )
-                else:
-                    o = requests.get(
-                        f"{c.overseerrHost}/api/v1/search/?query="
-                        + str(sonarr["title"]),
-                        headers=headers,
-                    )
+                o = requests.get(
+                    f"{c.overseerrHost}/api/v1/search/?query=tvdb%3A"
+                    + str(sonarr["tvdbId"]),
+                    headers=headers,
+                )
                 overseerrid = jq.compile(
                     "[select (.results[].mediainfo.tvdbId = "
                     + str(sonarr["tvdbId"])
