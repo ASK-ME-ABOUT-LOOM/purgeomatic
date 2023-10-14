@@ -31,6 +31,10 @@ def purge(movie):
 
     guids = jq.compile(".[].data.guids").input(r.json()).first()
 
+    if len(guids) == 0:
+       print(f"Ignoring '{movie['title']}' as could not find GUID in TMDB for it.");
+       return 0
+
     tmdbid = [i for i in guids if i.startswith("tmdb://")][0].split("tmdb://", 1)[1]
 
     f = requests.get(f"{c.radarrHost}/api/v3/movie?apiKey={c.radarrAPIkey}")
