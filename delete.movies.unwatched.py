@@ -115,8 +115,11 @@ try:
                         totalsize = totalsize + purge(movie)
 except Exception as e:
     print(
-        "ERROR: There was a problem connecting to Tautulli/Radarr/Overseerr. Please double-check that your connection settings and API keys are correct.\n\nError message:\n"
-        + str(e)
+        f"ERROR: There was a problem processing {movie['title']}.",
+        "This could be whilst connecting to Tautulli/Radarr/Overseerr.",
+        "Please double-check that your connection settings and API keys are correct.",
+        "\nError message:",
+        str(e)
     )
     sys.exit(1)
 
