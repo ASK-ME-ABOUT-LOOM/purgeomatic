@@ -24,6 +24,7 @@ print(datetime.now().isoformat())
 
 def purge(series):
     deletesize = 0
+    tvdbid = None
 
     r = requests.get(
         f"{c.tautulliHost}/api/v2/?apikey={c.tautulliAPIkey}&cmd=get_metadata&rating_key={series['rating_key']}"
@@ -31,7 +32,8 @@ def purge(series):
 
     guids = jq.compile(".[].data.guids").input(r.json()).first()
 
-    tvdbid = [i for i in guids if i.startswith("tvdb://")][0].split("tvdb://", 1)[1]
+    if guids:
+        tvdbid = [i for i in guids if i.startswith("tvdb://")][0].split("tvdb://", 1)[1]
 
     f = requests.get(f"{c.sonarrHost}/api/v3/series?apiKey={c.sonarrAPIkey}")
     try:

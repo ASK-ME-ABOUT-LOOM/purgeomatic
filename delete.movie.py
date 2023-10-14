@@ -32,6 +32,7 @@ if not isinstance(args.title, str) or len(args.title) < 1:
 
 def purge(movie):
     deletesize = 0
+    tmdbid = None
 
     r = requests.get(
         f"{c.tautulliHost}/api/v2/?apikey={c.tautulliAPIkey}&cmd=get_metadata&rating_key={movie['rating_key']}"
@@ -39,7 +40,8 @@ def purge(movie):
 
     guids = jq.compile(".[].data.guids").input(r.json()).first()
 
-    tmdbid = [i for i in guids if i.startswith("tmdb://")][0].split("tmdb://", 1)[1]
+    if guids:
+        tmdbid = [i for i in guids if i.startswith("tmdb://")][0].split("tmdb://", 1)[1]
 
     f = requests.get(f"{c.radarrHost}/api/v3/movie?apiKey={c.radarrAPIkey}")
     try:
