@@ -61,6 +61,8 @@ def purge(movie):
                 + str(radarr["id"])
                 + f"?apiKey={c.radarrAPIkey}&deleteFiles=true"
             )
+            if len(response.content) >= 2:
+                raise Exception("Response body size is (" + str(len(response.content)) + ") - movie may not have deleted. Check that the configured Radarr URL base is correct!")
 
         try:
             if not c.dryrun and c.overseerrAPIkey is not None:
