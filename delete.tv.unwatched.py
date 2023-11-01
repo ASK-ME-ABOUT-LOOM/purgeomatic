@@ -43,7 +43,7 @@ def purge(series):
             )
         else:
             sonarr = (
-                jq.compile(f".[] | select(.title == {series['title']})")
+                jq.compile(f".[] | select(.title == \"{series['title']}\")")
                 .input(f.json())
                 .first()
             )
