@@ -43,7 +43,7 @@ def purge(movie):
             )
         else:
             radarr = (
-                jq.compile(f".[] | select(.title == {movie['title']})")
+                jq.compile(f".[] | select(.title == \"{movie['title']}\")")
                 .input(f.json())
                 .first()
             )
