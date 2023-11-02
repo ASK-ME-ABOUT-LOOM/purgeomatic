@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 
-
 class Config:
     def __init__(self):
         load_dotenv()
@@ -19,6 +18,12 @@ class Config:
         self.radarrAPIkey = os.getenv("RADARR_API")
         self.sonarrHost = os.getenv("SONARR", "http://localhost:8989")
         self.sonarrAPIkey = os.getenv("SONARR_API")
+        self.transmissionRpcHost = os.getenv("TRANSMISSION_RPC_HOST")
+        self.transmissionRpcProtocol = os.getenv("TRANSMISSION_RPC_PROTOCOL")
+        self.transmissionRpcPort = os.getenv("TRANSMISSION_RPC_PORT")
+        self.transmissionRemoteUser = os.getenv("TRANSMISSION_REMOTE_USER")
+        self.transmissionRemotePass = os.getenv("TRANSMISSION_REMOTE_PASSWORD")
+        self.transmissionRemotePath = os.getenv("TRANSMISSION_RPC_PATH")
         if self.dryrun:
             print("DRY_RUN enabled!")
 

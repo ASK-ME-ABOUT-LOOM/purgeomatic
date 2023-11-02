@@ -5,6 +5,7 @@ import requests
 from datetime import datetime
 import jq
 import sys
+from transmission_rpc import Client
 
 c = config.Config()
 if not c.check("tautulliAPIkey", "radarrAPIkey"):
@@ -73,6 +74,41 @@ def purge(movie):
                 )
         except Exception as e:
             print("ERROR: Unable to connect to overseerr. Error message: " + str(e))
+
+        # Transmission
+        try:
+            if c.transmissionRpcHost is not None:
+                transmissionRemoteClient = Client(
+                  protocol=str(c.transmissionRpcProtocol),
+                  username=str(c.transmissionRemoteUser),
+                  password=str(c.transmissionRemotePass),
+                  host=str(c.transmissionRpcHost),
+                  port=str(c.transmissionRpcPort),
+                  path=str(c.transmissionRemotePath)
+                )
+
+                torrents = transmissionRemoteClient.get_torrents()
+                torrentlist = []
+
+                # Add torrent names and their corresponding IDs to a list
+                for torrent in torrents:
+                    torrentlist.append(torrent.name)
+                    torrentlist.append(torrent.id)
+
+                if radarr["movieFile"]["sceneName"] in torrentlist:
+                  print("Torrent match found: " + radarr["movieFile"]["sceneName"])
+
+                  # Print torrent info by its ID
+                  torrent = transmissionRemoteClient.get_torrent(torrentlist[torrentlist.index(radarr["movieFile"]["sceneName"])+1])
+                  print("Torrent ID: " + str(torrent.id))
+
+                if not c.dryrun:
+                  print("Removing torrent and its data: " + radarr["movieFile"]["sceneName"])
+                  transmissionRemoteClient.remove_torrent(torrent.id, delete_data=True)
+
+        except Exception as e:
+            #print("ERROR: " + str(e))
+            print("No original Radarr filename found for: " + movie["title"])
 
         action = "DELETED"
         if c.dryrun:
