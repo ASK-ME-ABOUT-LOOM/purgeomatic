@@ -210,6 +210,13 @@ DELETED: Harry Potter and the Chamber of Secrets | Radarr ID: 2292 | TMDB ID: 67
 Total space reclaimed: 17.03GB
 ```
 
+## Transmission
+
+If you're looking for support for Transmission, this project doesn't have it, but you can find a fork here which does:
+[https://github.com/ronilaukkarinen/purgeomatic](https://github.com/ronilaukkarinen/purgeomatic)
+
+Thanks [ronilaukkarinen](https://github.com/ronilaukkarinen)!
+
 ## Synology
 
 Here's a [great writeup for getting this project working on your Synology box](README_synology.md) if you're just getting started. Credit to [/u/OkBoomerEh](https://www.reddit.com/user/OkBoomerEh) on reddit. 
