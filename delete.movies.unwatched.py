@@ -11,6 +11,8 @@ if not c.check("tautulliAPIkey", "radarrAPIkey"):
     print("ERROR: Required Tautulli/Radarr API key not set. Cannot continue.")
     sys.exit(1)
 
+c.apicheck(c.radarrHost, c.radarrAPIkey)
+
 protected = []
 
 if os.path.exists("./protected"):

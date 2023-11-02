@@ -1,4 +1,7 @@
 import os
+import sys
+import json
+import requests
 from dotenv import load_dotenv
 
 
@@ -30,3 +33,66 @@ class Config:
                 print(f"ERROR: '{k}' env not set. Cannot continue.")
                 retval = False
         return retval
+
+    def apicheck(self, arrHost, arrAPIkey):
+        apierrors = []
+
+        result = self.apicheck_tautulli()
+        if result is not None:
+            apierrors.append(result)
+
+        result = self.apicheck_arr(arrHost, arrAPIkey)
+        if result is not None:
+            apierrors.append(result)
+
+        if self.overseerrAPIkey is not None:
+            result = self.apicheck_overseerr()
+            if result is not None:
+                apierrors.append(result)
+
+        if apierrors:
+            print(*apierrors, sep="\n")
+            sys.exit(1)
+
+        return None
+
+    def apicheck_tautulli(self):
+        try:
+            r = requests.get(
+                f"{self.tautulliHost}/api/v2/?apikey={self.tautulliAPIkey}&cmd=arnold"
+            )
+            r.raise_for_status()
+            apicheck = json.loads(r.text)
+            if "result" in apicheck["response"]:
+                if apicheck["response"]["result"] != "success":
+                    return "ERROR: Tautulli error: API connection successful, but Tautulli does not report a status of 'success.' Is your Tautulli installation ok?"
+            else:
+                return "ERROR: Tautulli API connection failure. Please check your connection string/API key and try again."
+        except Exception as e:
+            return f"ERROR: Connection failure when attempting to contact your Tautulli API. Please double-check your connection string and API key configuration. Error raised:\n\t{e}"
+        return None
+
+    def apicheck_arr(self, arrHost, arrAPIkey):
+        try:
+            r = requests.get(f"{arrHost}/api/v3/config/host?apiKey={arrAPIkey}")
+            r.raise_for_status()
+            apicheck = json.loads(r.text)
+            if not "apiKey" in apicheck:
+                return "ERROR: Unexpected response from your Arr service's API. Please double-check your connection string/API key and try again."
+        except Exception as e:
+            return f"ERROR: Connection failure when attempting to contact your Arr service's API. Please double-check your connection string/API key and try again. Error raised:\n\t{e}"
+        return None
+
+    def apicheck_overseerr(self):
+        try:
+            headers = {"X-Api-Key": f"{self.overseerrAPIkey}"}
+            r = requests.get(
+                f"{self.overseerrHost}/api/v1/settings/main", headers=headers
+            )
+            r.raise_for_status()
+            apicheck = json.loads(r.text)
+            if not "apiKey" in apicheck:
+                return "ERROR: Unexpected response from your Overseerr API. Please double-check your connection string/API key and try again."
+        except Exception as e:
+            return f"ERROR: Connection failure when attempting to contact your Overseerr API. Please double-check your connection string/API key and try again. Error raised:\n\t{e}"
+        return None

@@ -11,6 +11,8 @@ if not c.check("tautulliAPIkey", "sonarrAPIkey"):
     print("ERROR: Required Tautulli/Sonarr API key not set. Cannot continue.")
     sys.exit(1)
 
+c.apicheck(c.sonarrHost, c.sonarrAPIkey)
+
 protected = []
 
 if os.path.exists("./protected"):
