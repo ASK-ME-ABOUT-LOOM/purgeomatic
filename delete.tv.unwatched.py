@@ -34,8 +34,17 @@ def purge(series):
 
     guids = jq.compile(".[].data.guids").input(r.json()).first()
 
-    if guids:
-        tvdbid = [i for i in guids if i.startswith("tvdb://")][0].split("tvdb://", 1)[1]
+    try:
+        if guids:
+            tvdbid = [i for i in guids if i.startswith("tvdb://")][0].split(
+                "tvdb://", 1
+            )[1]
+    except Exception as e:
+        print(
+            f"ERROR: Unable to get TVDBID for {series['title']} even though it appears to be set in Tautulli. Falling back to title-based matching. Error message:"
+            + str(e)
+        )
+        guids = []
 
     f = requests.get(f"{c.sonarrHost}/api/v3/series?apiKey={c.sonarrAPIkey}")
     try:
