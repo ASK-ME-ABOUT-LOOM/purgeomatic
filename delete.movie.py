@@ -42,8 +42,17 @@ def purge(movie):
 
     guids = jq.compile(".[].data.guids").input(r.json()).first()
 
-    if guids:
-        tmdbid = [i for i in guids if i.startswith("tmdb://")][0].split("tmdb://", 1)[1]
+    try:
+        if guids:
+            tmdbid = [i for i in guids if i.startswith("tmdb://")][0].split(
+                "tmdb://", 1
+            )[1]
+    except Exception as e:
+        print(
+            f"WARNING: {movie['title']}: Unexpected GUID metadata from Tautulli. Please refresh your library's metadata in Plex. Using less-accurate 'search mode' for this title. Error message: "
+            + str(e)
+        )
+        guids = []
 
     f = requests.get(f"{c.radarrHost}/api/v3/movie?apiKey={c.radarrAPIkey}")
     try:

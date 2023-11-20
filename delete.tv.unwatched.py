@@ -41,7 +41,7 @@ def purge(series):
             )[1]
     except Exception as e:
         print(
-            f"ERROR: Unable to get TVDBID for {series['title']} even though it appears to be set in Tautulli. Falling back to title-based matching. Error message:"
+            f"WARNING: {series['title']}: Unexpected GUID metadata from Tautulli. Please refresh your library's metadata in Plex. Using less-accurate 'search mode' for this title. Error message: "
             + str(e)
         )
         guids = []
