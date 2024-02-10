@@ -88,16 +88,19 @@ def purge(movie):
         if c.dryrun:
             action = "DRY RUN"
 
+        deletesize = int(movie["file_size"]) / 1073741824
         print(
             action
             + ": "
             + movie["title"]
+            + " | "
+            + str("{:.2f}".format(deletesize))
+            + "GB"
             + " | Radarr ID: "
             + str(radarr["id"])
             + " | TMDB ID: "
             + str(radarr["tmdbId"])
         )
-        deletesize = int(movie["file_size"]) / 1073741824
     except StopIteration:
         pass
     except Exception as e:

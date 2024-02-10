@@ -93,16 +93,19 @@ def purge(series):
         if c.dryrun:
             action = "DRY RUN"
 
+        deletesize = int(sonarr["statistics"]["sizeOnDisk"]) / 1073741824
         print(
             action
             + ": "
             + series["title"]
+            + " | "
+            + str("{:.2f}".format(totalsize))
+            + "GB"
             + " | Sonarr ID: "
             + str(sonarr["id"])
             + " | TVDB ID: "
             + str(sonarr["tvdbId"])
         )
-        deletesize = int(sonarr["statistics"]["sizeOnDisk"]) / 1073741824
     except StopIteration:
         pass
     except Exception as e:
