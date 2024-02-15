@@ -22,6 +22,7 @@ class Config:
         self.radarrAPIkey = os.getenv("RADARR_API")
         self.sonarrHost = os.getenv("SONARR", "http://localhost:8989")
         self.sonarrAPIkey = os.getenv("SONARR_API")
+        self.protectedPlaylistName = os.getenv("PROTECTED_PLAYLIST_NAME", "Protected")
         if self.dryrun:
             print("DRY_RUN enabled!")
 
