@@ -115,7 +115,7 @@ def main():
         rkey = get_playlist_rating_key(playlists.json())
         movielist = get_playlist_content(rkey)
         rating_keys = get_rating_keys(movielist.json())
-        write_tmdbid("########### " + user_id + " ###########")
+        write_tmdbid("########### " + str(user_id) + " ###########")
 
         # Loop for each movie in the playlist
         for rating_key in rating_keys:
