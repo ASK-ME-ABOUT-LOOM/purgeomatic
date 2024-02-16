@@ -95,6 +95,16 @@ An example of the contents of a `protected` file:
 
 Note: because the `protected` file uses TMDB & TVDB IDs, there is a possibility of overlap. If you're concerned about this, I suggest you create separate files for running with the TV and movie deletes, i.e. `-v /home/user/protectedtv:/app/protected` and `-v /home/user/protectedmovies:/app/protected`.
 
+
+### Protected movie list generation
+
+
+Example command:
+
+```
+docker run --rm -it --env-file .env --network=host -v /home/user/protectedmovies:/app/protected ghcr.io/ask-me-about-loom/purgeomatic:latest python create.movie.whitelist.py
+```
+
 ### Alternate usage
 
 If you wish, you can also run the python code yourself. This code has been tested on python 3.10 and 3.11.
