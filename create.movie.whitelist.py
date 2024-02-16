@@ -121,7 +121,6 @@ def main():
                     f"Failed to get playlists for user {user_id}. Response: {user_playlists.json()['response']['message']}")
             rkey = get_playlist_rating_key(user_playlists.json())
             movielist = get_playlist_content(rkey)
-            print(movielist.json()['response'])
             rating_keys = get_rating_keys(movielist.json())
             write_tmdbid("########### " + str(user_id) + " ###########")
             for rating_key in rating_keys:
