@@ -102,7 +102,7 @@ def get_tmdbid(guids):
 def write_tmdbid(tmdbid):
     with open("/app/protected", "a") as file:
         file.write(tmdbid + "\n")
-        
+
 
 # function to call all the above functions
 def main():
@@ -119,16 +119,16 @@ def main():
             elif user_playlists.json()['response']['result'] != 'success':
                 raise ValueError(
                     f"Failed to get playlists for user {user_id}. Response: {user_playlists.json()['response']['message']}")
-            else:
-                rkey = get_playlist_rating_key(user_playlists.json())
-                movielist = get_playlist_content(rkey)
-                rating_keys = get_rating_keys(movielist.json())
-                write_tmdbid("########### " + str(user_id) + " ###########")
-                for rating_key in rating_keys:
-                    movie = get_movie_info(rating_key)
-                    guids = get_movie_guids(movie)
-                    tmdbid = get_tmdbid(guids)
-                    write_tmdbid(tmdbid)            
+            rkey = get_playlist_rating_key(user_playlists.json())
+            movielist = get_playlist_content(rkey)
+            print(movielist.json()['response'])
+            rating_keys = get_rating_keys(movielist.json())
+            write_tmdbid("########### " + str(user_id) + " ###########")
+            for rating_key in rating_keys:
+                movie = get_movie_info(rating_key)
+                guids = get_movie_guids(movie)
+                tmdbid = get_tmdbid(guids)
+                write_tmdbid(tmdbid)
         except Exception as e:
             print(e)
 
