@@ -47,7 +47,7 @@ def get_playlist_rating_key(data):
         if playlist['title'] == c.protectedPlaylistName:
             return playlist['ratingKey']
     # Return None if the playlist is not found
-    return None
+    return(None)
 
 
 # function to get playlist content from tautulli
@@ -55,14 +55,14 @@ def get_playlist_content(rkey):
     movielist = requests.get(
         f"{c.tautulliHost}/api/v2?apikey={c.tautulliAPIkey}&cmd=get_children_metadata&rating_key={rkey}&media_type=playlist"
     )
-    return (movielist)
+    return(movielist)
 
 
 # function to pick out the rating_keys from the movielist and return them
 def get_rating_keys(movielist):
     rating_keys = [movie['rating_key']
                    for movie in movielist['response']['data']['children_list']]
-    return rating_keys
+    return(rating_keys)
 
 
 # fucntion to get movie info from tautulli
@@ -70,13 +70,13 @@ def get_movie_info(rkey):
     movie = requests.get(
         f"{c.tautulliHost}/api/v2?apikey={c.tautulliAPIkey}&cmd=get_metadata&rating_key={rkey}"
     )
-    return (movie)
+    return(movie)
 
 
 # function to get guids from movie info
 def get_movie_guids(movie):
     guids = jq.compile(".[].data.guids").input(movie.json()).first()
-    return guids
+    return(guids)
 
 
 # function to pick out the tmdbid from the guids
@@ -95,7 +95,7 @@ def get_tmdbid(guids):
             + str(e)
         )
         tmdbid = None
-    return tmdbid
+    return(tmdbid)
 
 
 # function to append tmdbid to a file
@@ -111,22 +111,26 @@ def main():
 
     # Loop for each user
     for user_id in user_ids:
-        playlists = get_playlists(user_id)
-        rkey = get_playlist_rating_key(playlists.json())
-        movielist = get_playlist_content(rkey)
-        rating_keys = get_rating_keys(movielist.json())
-        write_tmdbid("########### " + str(user_id) + " ###########")
-
-        # Loop for each movie in the playlist
-        for rating_key in rating_keys:
-            movie = get_movie_info(rating_key)
-            guids = get_movie_guids(movie)
-            tmdbid = get_tmdbid(guids)
-            write_tmdbid(tmdbid)
-
-        # Separate users with "#" as line separator
-        with open("/app/protected", "a") as file:
-            file.write("#\n")
+        try:
+            user_playlists = get_playlists(user_id)
+            if user_playlists.status_code != 200:
+                raise ValueError(
+                    f"Failed to get playlists for user {user_id}. Status code: {user_playlists.status_code}")
+            elif user_playlists.json()['response']['result'] != 'success':
+                raise ValueError(
+                    f"Failed to get playlists for user {user_id}. Response: {user_playlists.json()['response']['message']}")
+            else:
+                rkey = get_playlist_rating_key(user_playlists.json())
+                movielist = get_playlist_content(rkey)
+                rating_keys = get_rating_keys(movielist.json())
+                write_tmdbid("########### " + str(user_id) + " ###########")
+                for rating_key in rating_keys:
+                    movie = get_movie_info(rating_key)
+                    guids = get_movie_guids(movie)
+                    tmdbid = get_tmdbid(guids)
+                    write_tmdbid(tmdbid)            
+        except Exception as e:
+            print(e)
 
 
 # Call the main function
