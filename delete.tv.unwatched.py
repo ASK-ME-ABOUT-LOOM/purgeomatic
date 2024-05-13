@@ -15,6 +15,11 @@ c.apicheck(c.sonarrHost, c.sonarrAPIkey)
 
 protected = []
 
+try:
+    protected_tags = [int(i) for i in c.sonarrProtectedTags.split(",")]
+except Exception as e:
+    protected_tags = []
+
 if os.path.exists("./protected"):
     with open("./protected", "r") as file:
         while line := file.readline():
@@ -60,6 +65,9 @@ def purge(series):
             )
 
         if sonarr["tvdbId"] in protected:
+            return deletesize
+
+        if any(e in protected_tags for e in sonarr["tags"]):
             return deletesize
 
         if not c.dryrun:

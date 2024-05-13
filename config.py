@@ -20,8 +20,10 @@ class Config:
         self.dryrun = os.getenv("DRY_RUN", None) != None
         self.radarrHost = os.getenv("RADARR", "http://localhost:7878")
         self.radarrAPIkey = os.getenv("RADARR_API")
+        self.radarrProtectedTags = os.getenv("RADARR_PROTECTED_TAGS")
         self.sonarrHost = os.getenv("SONARR", "http://localhost:8989")
         self.sonarrAPIkey = os.getenv("SONARR_API")
+        self.sonarrProtectedTags = os.getenv("SONARR_PROTECTED_TAGS")
         if self.dryrun:
             print("DRY_RUN enabled!")
 

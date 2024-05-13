@@ -95,6 +95,31 @@ An example of the contents of a `protected` file:
 
 Note: because the `protected` file uses TMDB & TVDB IDs, there is a possibility of overlap. If you're concerned about this, I suggest you create separate files for running with the TV and movie deletes, i.e. `-v /home/user/protectedtv:/app/protected` and `-v /home/user/protectedmovies:/app/protected`.
 
+### Protected Tags
+
+Additionally, you may also specify tags from Radarr/Sonarr for which content must not be deleted. Those tags can be provided as a comma-seperated list of IDs (**not tag names!**) using the `RADARR_PROTECTED_TAGS` and `SONARR_PROTECTED_TAGS` environment variables. That's a great way to simplify protecting specific media - you might also use the automated tagging feature within Radarr/Sonarr to automatically protect media matching specific criteria.
+
+The best way to get the corresponding tag IDs is to simply browse to http://\<Radarr|Sonarr\>/api/v3/tag?apikey=\<Your API-Key\> - The output should look like this:
+
+```json
+[
+  {
+    "label": "rssimport",
+    "id": 21
+  },
+  {
+    "label": "example",
+    "id": 22
+  },
+  {
+    "label": "noautodelete",
+    "id": 26
+  }
+]
+```
+
+If we'd like to exclude the tags "example" and "noautodelete", we'd set `<RADARR|SONARR>_PROTECTED_TAGS=22,26`. 
+
 ### Alternate usage
 
 If you wish, you can also run the python code yourself. This code has been tested on python 3.10 and 3.11.
@@ -146,7 +171,11 @@ The scripts use the following environment variables for configuration:
 
 - `OVERSEERR`: The URL & port of your Overseerr installation, e.g. `http://localhost:5055`
 
-- `OVERSEERR_API`: The API key for accessing your Overseerr installation. Be sure to comment out the Overseerr connection variables in your `.env` file if you don't use Overseerr. It will keep your logs neat. 
+- `OVERSEERR_API`: The API key for accessing your Overseerr installation. Be sure to comment out the Overseerr connection variables in your `.env` file if you don't use Overseerr. It will keep your logs neat.
+ 
+- `RADARR_PROTECTED_TAGS`: A comma-seperated list of Radarr tag IDs to dynamically exclude content from deletion. Browse to http://\<Radarr\>/api/v3/tag?apikey=\<Your API-Key\> to see the IDs corresponding to your tags. Movies containing that tag will not be deleted. Leave blank or set to 0 to disable.
+
+- `RADARR_PROTECTED_TAGS`: A comma-seperated list of Sonarr tag IDs to dynamically exclude content from deletion. Browse to http://\<Sonarr\>/api/v3/tag?apikey=\<Your API-Key\> to see the IDs corresponding to your tags. Shows containing that tag will not be deleted. Leave blank or set to 0 to disable.
 
 - `TAUTULLI_MOVIE_SECTIONID`: Default: 1. The section ID in Tautulli containing watch history metadata of movies. You can get this by going to Tautulli, clicking "Libraries," then clicking the library you want to use. Look at the URL bar and you'll see "library?section_id=". You want the number after "section_id=".
 
