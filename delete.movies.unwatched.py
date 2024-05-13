@@ -20,6 +20,8 @@ if os.path.exists("./protected"):
         while line := file.readline():
             protected.append(int(line.rstrip()))
 
+protected_tags = [int(i) for i in c.radarrProtectedTags.split(",")]
+
 print("--------------------------------------")
 print(datetime.now().isoformat())
 
@@ -59,6 +61,9 @@ def purge(movie):
             )
 
         if radarr["tmdbId"] in protected:
+            return deletesize
+
+        if any(e in protected_tags for e in radarr["tags"]):
             return deletesize
 
         if not c.dryrun:
