@@ -15,7 +15,10 @@ c.apicheck(c.sonarrHost, c.sonarrAPIkey)
 
 protected = []
 
-protected_tags = [int(i) for i in c.sonarrProtectedTags.split(",")]
+try:
+    protected_tags = [int(i) for i in c.sonarrProtectedTags.split(",")]
+except Exception as e:
+    protected_tags = []
 
 if os.path.exists("./protected"):
     with open("./protected", "r") as file:

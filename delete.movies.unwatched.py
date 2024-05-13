@@ -20,7 +20,11 @@ if os.path.exists("./protected"):
         while line := file.readline():
             protected.append(int(line.rstrip()))
 
-protected_tags = [int(i) for i in c.radarrProtectedTags.split(",")]
+try:
+    protected_tags = [int(i) for i in c.radarrProtectedTags.split(",")]
+except Exception as e:
+    protected_tags = []
+
 
 print("--------------------------------------")
 print(datetime.now().isoformat())
