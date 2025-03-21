@@ -124,6 +124,7 @@ r = requests.get(
     f"{c.tautulliHost}/api/v2/?apikey={c.tautulliAPIkey}&cmd=get_library_media_info&section_id={c.tautulliMovieSectionID}&length={c.tautulliNumRows}&refresh=true"
 )
 movies = json.loads(r.text)
+count = 0
 
 try:
     for movie in movies["response"]["data"]["data"]:
@@ -131,12 +132,14 @@ try:
             lp = round((today - int(movie["last_played"])) / 86400)
             if lp > c.daysSinceLastWatch:
                 totalsize = totalsize + purge(movie)
+                count = count + 1
         else:
             if c.daysWithoutWatch > 0:
                 if movie["added_at"] and movie["play_count"] is None:
                     aa = round((today - int(movie["added_at"])) / 86400)
                     if aa > c.daysWithoutWatch:
                         totalsize = totalsize + purge(movie)
+                        count = count + 1
 except Exception as e:
     print(
         "ERROR: There was a problem connecting to Tautulli/Radarr/Overseerr. Please double-check that your connection settings and API keys are correct.\n\nError message:\n"
@@ -145,3 +148,4 @@ except Exception as e:
     sys.exit(1)
 
 print("Total space reclaimed: " + str("{:.2f}".format(totalsize)) + "GB")
+print("Total items deleted:   " + str(count))
