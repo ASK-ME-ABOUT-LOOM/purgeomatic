@@ -17,8 +17,10 @@ protected = []
 
 if os.path.exists("./protected"):
     with open("./protected", "r") as file:
-        while line := file.readline():
-            protected.append(int(line.rstrip()))
+        for line in file:
+            line = line.split("#", 1)[0].strip()
+            if line.isdigit():
+                protected.append(int(line))
 
 try:
     protected_tags = [int(i) for i in c.radarrProtectedTags.split(",")]
