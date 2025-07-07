@@ -100,6 +100,10 @@ def purge(movie):
             action = "DRY RUN"
 
         deletesize = int(movie["file_size"]) / 1073741824
+        if movie["last_played"]:
+            lastplayed = datetime.fromtimestamp(int(movie["last_played"])).strftime("%Y %b %d")
+        else:
+            lastplayed = "Never"
         print(
             action
             + ": "
@@ -111,6 +115,8 @@ def purge(movie):
             + str(radarr["id"])
             + " | TMDB ID: "
             + str(radarr["tmdbId"])
+            + " | Last played: "
+            + lastplayed
         )
     except StopIteration:
         pass

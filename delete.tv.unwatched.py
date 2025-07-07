@@ -104,6 +104,10 @@ def purge(series):
             action = "DRY RUN"
 
         deletesize = int(sonarr["statistics"]["sizeOnDisk"]) / 1073741824
+        if series["last_played"]:
+            lastplayed = datetime.fromtimestamp(int(series["last_played"])).strftime("%Y %b %d")
+        else:
+            lastplayed = "Never"
         print(
             action
             + ": "
@@ -115,6 +119,8 @@ def purge(series):
             + str(sonarr["id"])
             + " | TVDB ID: "
             + str(sonarr["tvdbId"])
+            + " | Last played: "
+            + lastplayed
         )
     except StopIteration:
         pass
